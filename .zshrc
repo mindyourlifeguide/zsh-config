@@ -106,7 +106,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search safe-paste common-aliases you-should-use magic-enter sudo zsh-syntax-highlighting )
+plugins=(git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search safe-paste common-aliases you-should-use magic-enter sudo zsh-syntax-highlighting)
 #
 #plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search safe-paste command-not-found common-aliases you-should-use colorize magic-enter colored-man-pages sudo zsh-syntax-highlighting )
 #
@@ -145,6 +145,8 @@ zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:
 export EDITOR=kate
 #
 # Example aliases
+alias g='git'
+alias ..='cd ..'
 alias home="cd ~/"
 alias Work="cd /mnt/Work/"
 alias D="cd /mnt/D/"
@@ -224,7 +226,10 @@ compinit -C
   fi
 } &!
 
-
+# Key bindings
+bindkey -e
+bindkey ';5D' backward-word # ctrl+left
+bindkey ';5C' forward-word  # ctrl+right
 bindkey '^r' history-incremental-search-backward
 bindkey "^[[5~" up-line-or-history
 bindkey "^[[6~" down-line-or-history
