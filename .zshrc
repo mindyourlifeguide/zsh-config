@@ -285,3 +285,17 @@ pk () {
         echo "'$1' is not a valid file"
     fi
 }
+
+# locate directories:
+# -------------------
+#locd () {
+#    locate $1 | xargs -I {} zsh -c 'if [ -d "{}" ]; then echo {}; fi'
+#}
+# locate files:
+sf (){
+locate $1
+}
+# locate directories:
+sd (){
+locate -r "/$1$"
+}
