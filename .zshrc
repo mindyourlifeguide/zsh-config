@@ -142,7 +142,8 @@ zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-export EDITOR=kate
+# export EDITOR="/bin/nano"
+export EDITOR="/bin/kate"
 #
 # Example aliases
 alias g='git'
@@ -166,6 +167,18 @@ alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
 # alias rmrf='nocorrect rm -fR' # принудительное рекурсивное удаление без коррекции
 # alias mkdir='nocorrect mkdir' # создание каталогов без коррекции
 
+# use /etc/hosts and known_hosts for hostname completion
+[ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
+[ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+[ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+hosts=(
+  "$_global_ssh_hosts[@]"
+  "$_ssh_hosts[@]"
+  "$_etc_hosts[@]"
+  "$HOST"
+  localhost
+)
+zstyle ':completion:*:hosts' hosts $hosts
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -228,6 +241,8 @@ compinit -C
 
 # Key bindings
 bindkey -e
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 bindkey ';5D' backward-word # ctrl+left
 bindkey ';5C' forward-word  # ctrl+right
 bindkey '^r' history-incremental-search-backward
@@ -299,3 +314,28 @@ locate $1
 sd (){
 locate -r "/$1$"
 }
+
+cat_via_pygmentize() {
+    if [ ! -x $(which pygmentize) ]; then
+        echo package \'pygmentize\' is not installed!
+        exit -1
+    fi
+
+    if [ $# -eq 0 ]; then
+        pygmentize -g $@
+    fi
+     
+    for FNAME in $@
+    do
+        filename=$(basename "$FNAME")
+        lexer=`pygmentize -N \"$filename\"`
+        if [ "Z$lexer" != "Ztext" ]; then
+            pygmentize -l $lexer "$FNAME"
+        else
+            pygmentize -g "$FNAME"
+        fi
+
+    done
+}
+
+alias o='cat_via_pygmentize'
