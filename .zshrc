@@ -114,7 +114,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found  common-aliases you-should-use magic-enter colored-man-pages  sudo zsh-syntax-highlighting)
+plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
