@@ -5,11 +5,22 @@ fi
 
 source ~/.oh-my-zsh/.zsh-async/async.zsh
 
+# Install zsh-autopair if it’s not present
+if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
+  sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
+fi
+
+source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
+autopair-init
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
+
+
 # Path to NVM
 export NVM_DIR="$HOME/.nvm"
 # Async load NVM
 function load_nvm() {
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/nvm.sah" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
 
@@ -20,7 +31,7 @@ async_job nvm_worker sleep 0.1
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-
+export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 # Path to NVM
 # export NVM_DIR=~/.nvm
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
@@ -66,7 +77,7 @@ export ZSH="/home/bohdan/.oh-my-zsh"
 # DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-export UPDATE_ZSH_DAYS=7
+# export UPDATE_ZSH_DAYS=7
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
@@ -106,19 +117,10 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search safe-paste common-aliases you-should-use magic-enter sudo zsh-syntax-highlighting)
-#
-#plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search safe-paste command-not-found common-aliases you-should-use colorize magic-enter colored-man-pages sudo zsh-syntax-highlighting )
+plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found  common-aliases you-should-use magic-enter colored-man-pages  sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
-
-#ZSH tab select autocomplete path
-zstyle ':completion:*' menu select=2
-
-#Zsh color partial tab completions
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("expand-or-complete")
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
 
 # User configuration
 
@@ -144,7 +146,12 @@ zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:
 #
 # export EDITOR="/bin/nano"
 export EDITOR="/bin/kate"
+
+# Setting a decimal point instead of a semicolon (required for some counting programs)
+export LC_NUMERIC="POSIX"
 #
+
+
 # Example aliases
 alias g='git'
 alias ..='cd ..'
@@ -154,31 +161,40 @@ alias D="cd /mnt/D/"
 alias Files="cd /mnt/D/Files/"
 alias c="clear"
 alias s="yst"
-alias zshconfig="kate ~/.zshrc"
-alias zshhistory="kate ~/.zsh_history"
-alias ohmyzsh="kate ~/.oh-my-zsh"
+alias zshconfig="$EDITOR ~/.zshrc"
+alias zshhistory="$EDITOR ~/.zsh_history"
+alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
 alias cra="create-react-app"
 alias history='fc -il 1'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
 alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
-# alias rm='nocorrect rm -i'    # удаление с подтверждением без коррекции
-# alias rmf='nocorrect rm -f'   # принудительное удаление без коррекции
-# alias rmrf='nocorrect rm -fR' # принудительное рекурсивное удаление без коррекции
-# alias mkdir='nocorrect mkdir' # создание каталогов без коррекции
 
-# use /etc/hosts and known_hosts for hostname completion
-[ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
-[ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-[ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
-hosts=(
-  "$_global_ssh_hosts[@]"
-  "$_ssh_hosts[@]"
-  "$_etc_hosts[@]"
-  "$HOST"
-  localhost
-)
-zstyle ':completion:*:hosts' hosts $hosts
+
+alias h=history
+alias grep=egrep
+
+
+## alias for commands that do not require correction, but require confirmation
+alias mv='nocorrect mv -i'      # renaming-moving with confirmation
+alias cp='nocorrect cp -iR'     # recursive copy with confirmation
+alias rm='nocorrect rm -i'      # confirmation deletion
+alias rmf='nocorrect rm -f'     # forced removal
+alias rmrf='nocorrect rm -fR'   # forced recursive delete
+alias mkdir='nocorrect mkdir'   # creating directories without correction
+## Note: if you do not define nocorrect here,
+## zsh will aggressively suggest substituting existing names
+## when creating a catalog, copying, etc.
+if [ -f /usr/bin/grc ]; then
+ alias gcc="grc --colour=auto gcc"
+ alias irclog="grc --colour=auto irclog"
+ alias log="grc --colour=auto log"
+ alias netstat="grc --colour=auto netstat"
+ alias ping="grc --colour=auto ping"
+ alias proftpd="grc --colour=auto proftpd"
+ alias traceroute="grc --colour=auto traceroute"
+fi
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -186,29 +202,31 @@ zstyle ':completion:*:hosts' hosts $hosts
 ## Path to  HISTFILE
 HISTFILE=~/.zsh_history
 SAVEHIST=5000
-HISTSIZE=10000
+HISTSIZE=5000
 DIRSTACKSIZE=20
 
+
+
 # Option history
-setopt APPEND_HISTORY         # history on
-setopt SHARE_HISTORY          # share history in all console
-setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks
-setopt CORRECT_ALL            # correct all bug
-setopt HIST_EXPIRE_DUPS_FIRST # replace uniq element
 setopt AUTO_CD                # automatically cd to a directory if not cmd
 setopt AUTO_PUSHD             # automatically pushd directories on dirstack
-setopt PUSHD_IGNORE_DUPS      # don't push dups on stack
-setopt LIST_PACKED            # variable col widths (takes up less space)
-setopt EXTENDED_HISTORY       # save timestamps in history
-setopt HIST_IGNORE_ALL_DUPS   # ignore consecutive all dups in history     
+setopt APPEND_HISTORY         # history on
+setopt SHARE_HISTORY          # share history in all console
+setopt HIST_REDUCE_BLANKS     # Delete blank lines from a history file
+setopt HIST_IGNORE_ALL_DUPS   # Delete duplicate commands
+setopt HIST_IGNORE_SPACE      # Delete lines starting with a space
 setopt HIST_FIND_NO_DUPS      # backwards search produces diff result eachtime
-setopt HIST_REDUCE_BLANKS     # compact consecutive white space chars (cool)
+setopt HIST_EXPIRE_DUPS_FIRST # replace uniq element
 setopt HIST_NO_STORE          # don't store history related functions
 setopt INC_APPEND_HISTORY     # incrementally add items to HISTFILE
-setopt completealiases
+setopt EXTENDED_HISTORY       # save timestamps in history
+setopt CORRECT_ALL            # correct all bug
+setopt PUSHD_IGNORE_DUPS      # don't push dups on stack
+setopt LIST_PACKED            # variable col widths (takes up less space)
+setopt COMPLETEALIASES
 setopt AUTO_MENU
-setopt menucomplete
-
+setopt MENUCOMPLETE
+setopt EXTENDEDGLOB NOMATCH NOTIFY
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
 pasteinit() {
@@ -221,8 +239,69 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
-
 ZSH_HIGHLIGHT_MAXLENGTH=300
+
+# Disabling support for the old compctl configuration system
+zstyle ':completion:*' use-compctl false
+#ZSH tab select autocomplete path
+zstyle ':completion:*' menu select=1 interactive        #Tab menu options
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.oh-my-zsh/cache
+zstyle ':completion:*' rehash true
+zstyle ':completion::complete:*' use-cache 1
+
+
+zstyle ':completion:*' file-sort name
+#zstyle ':completion:*' group-name '' #files first
+zstyle ':completion:*' list-colors ''
+
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' menu select=long-list select=0
+zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+
+
+# Key bindings
+bindkey -e
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^r'   history-incremental-search-backward
+
+
+bindkey '^[[H'  beginning-of-line                          # Home key
+bindkey '^[[F'  end-of-line                                # End key
+bindkey '^[[5~' up-line-or-history                         # Page up key
+bindkey '^[[6~' down-line-or-history                       # Page down key
+bindkey '^[[2~' overwrite-mode                             # Insert key
+bindkey '^[[3~' delete-char                                # Delete key
+bindkey '^[[C'  forward-char                               # Right key
+bindkey '^[[D'  backward-char                              # Left key
+
+
+# Navigate words with ctrl+arrow keys
+bindkey '^[Oc'    forward-word                             #
+bindkey '^[Od'    backward-word                            # 
+bindkey '^[[1;5D' backward-word                            # ctrl+left
+bindkey '^[[1;5C' forward-word                             # ctrl+right
+bindkey '^H'      backward-kill-word                       # delete previous word with ctrl+backspace
+bindkey "\e[3;6~" backward-kill-line                       # ctrl+shift+delete
+bindkey "\e[3@"   backward-kill-line                       # ctrl+shift+delete
+bindkey '^[[Z'    undo    
+
+bindkey ' '       magic-space                              # also do history expansion on space
+bindkey '^I'      complete-word                            # complete on tab, leave expansion to _expand 
+bindkey '\e[1;6D' insert-cycledleft
+bindkey '\e[1;6C' insert-cycledright
+bindkey '^[[1;6D' insert-cycledleft
+bindkey '^[[1;6C' insert-cycledright
+
+
+# escaping special characters in url, e.g. &,?, ~ and so on
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
 
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
@@ -239,25 +318,6 @@ compinit -C
   fi
 } &!
 
-# Key bindings
-bindkey -e
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey ';5D' backward-word # ctrl+left
-bindkey ';5C' forward-word  # ctrl+right
-bindkey '^r' history-incremental-search-backward
-bindkey "^[[5~" up-line-or-history
-bindkey "^[[6~" down-line-or-history
-bindkey "^[[H" beginning-of-line
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[F"  end-of-line
-bindkey "^[[4~" end-of-line
-bindkey ' ' magic-space    # also do history expansion on space
-bindkey '^I' complete-word # complete on tab, leave expansion to _expand
-
-# escaping special characters in url, e.g. &,?, ~ and so on
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
 
 
 # Extracted archive
@@ -301,7 +361,7 @@ pk () {
     fi
 }
 
-# locate directories:
+# locate directories (if you use locate):
 # -------------------
 #locd () {
 #    locate $1 | xargs -I {} zsh -c 'if [ -d "{}" ]; then echo {}; fi'
@@ -314,3 +374,17 @@ locate $1
 sd (){
 locate -r "/$1$"
 }
+
+
+# use /etc/hosts and known_hosts for hostname completion
+[ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
+[ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+[ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+hosts=(
+  "$_global_ssh_hosts[@]"
+  "$_ssh_hosts[@]"
+  "$_etc_hosts[@]"
+  "$HOST"
+  localhost
+)
+zstyle ':completion:*:hosts' hosts $hosts
