@@ -13,9 +13,6 @@ fi
 source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
-
-
 # Path to NVM
 export NVM_DIR="$HOME/.nvm"
 # Async load NVM
@@ -225,8 +222,6 @@ SAVEHIST=5000
 HISTSIZE=5000
 DIRSTACKSIZE=20
 
-
-
 # Option history
 setopt AUTO_CD                # automatically cd to a directory if not cmd
 setopt AUTO_PUSHD             # automatically pushd directories on dirstack
@@ -259,6 +254,7 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
 ZSH_HIGHLIGHT_MAXLENGTH=300
 
 # Disabling support for the old compctl configuration system
@@ -321,6 +317,11 @@ bindkey '^[[1;6C' insert-cycledright
 # escaping special characters in url, e.g. &,?, ~ and so on
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
+
+# Zsh color partial tab completions
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("expand-or-complete")
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
 
 
 autoload -Uz compinit
