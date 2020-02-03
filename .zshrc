@@ -174,6 +174,26 @@ alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
 alias h=history
 alias grep=egrep
 
+# Global Aliases
+alias -g N='2>/dev/null'
+alias -g L='|less'
+alias -g G='|grep'
+alias -g W='|wc'
+alias -g H='|head'
+alias -g T='|tail'
+
+# Aliases for ls command options
+alias ls='ls -F --group-directories-first' #List directories in front of files
+alias ll='ls -lh' # Output in "long" format with a "human" file size
+alias la='ls -A'  # List all files, including hidden, current and parent directories
+alias li=’ls -ial’ # The output of all files in the "long" format with the inode
+
+# The output of the df and du commands in the "human" format
+alias df='df -h'
+alias du='du -h'
+
+alias wget='wget -c' # Download ftp file with continuation
+
 
 ## alias for commands that do not require correction, but require confirmation
 alias mv='nocorrect mv -i'      # renaming-moving with confirmation
