@@ -1,14 +1,14 @@
 # Install zsh-async if it’s not present
-if [[ ! -a ~/.oh-my-zsh/.zsh-async ]]; then
- sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/.zsh-async
-fi
+#if [[ ! -a ~/.oh-my-zsh/.zsh-async ]]; then
+# sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/.zsh-async
+#fi
 
 source ~/.oh-my-zsh/.zsh-async/async.zsh
 
 # Install zsh-autopair if it’s not present
-if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
-  sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
-fi
+#if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
+#  sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
+#fi
 
 source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
