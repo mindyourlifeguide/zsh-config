@@ -1,26 +1,25 @@
 # Install zsh-async if it’s not present
-#if [[ ! -a ~/.oh-my-zsh/.zsh-async ]]; then
-# sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/.zsh-async
-#fi
+if [[ ! -a ~/.oh-my-zsh/.zsh-async ]]; then
+ sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/.zsh-async
+fi
 
 source ~/.oh-my-zsh/.zsh-async/async.zsh
 
 # Install zsh-autopair if it’s not present
-#if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
-#  sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
-#fi
+if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
+  sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
+fi
 
 source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
 
 # Path to NVM
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="~/.nvm"
 # Async load NVM
 function load_nvm() {
-    [ -s "$NVM_DIR/nvm.sah" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
-
 # Initialize worker
 async_start_worker nvm_worker -n
 async_register_callback nvm_worker load_nvm
@@ -29,11 +28,6 @@ async_job nvm_worker sleep 0.1
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
-# Path to NVM
-# export NVM_DIR=~/.nvm
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-
 
 # Path to Node
 export NODE_PATH=`which node`
@@ -42,7 +36,7 @@ export NODE_PATH=`which node`
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/bohdan/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
  
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -114,11 +108,10 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git nvm node npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
+plugins=(archlinux git npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -146,10 +139,8 @@ export EDITOR="/bin/kate"
 
 # Setting a decimal point instead of a semicolon (required for some counting programs)
 export LC_NUMERIC="POSIX"
-#
 
-
-# Example aliases
+# My Aliases
 alias g='git'
 alias ..='cd ..'
 alias home="cd ~/"
@@ -166,10 +157,9 @@ alias history='fc -il 1'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
 alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
-
-
 alias h=history
 alias grep=egrep
+alias wget='wget -c' # Download ftp file with continuation
 
 # Global Aliases
 alias -g N='2>/dev/null'
@@ -181,16 +171,13 @@ alias -g T='|tail'
 
 # Aliases for ls command options
 alias ls='ls -F --group-directories-first' #List directories in front of files
-alias ll='ls -lh' # Output in "long" format with a "human" file size
-alias la='ls -A'  # List all files, including hidden, current and parent directories
-alias li=’ls -ial’ # The output of all files in the "long" format with the inode
+alias ll='ls -lh'  # Output in "long" format with a "human" file size
+alias la='ls -A'   # List all files, including hidden, current and parent directories
+alias li='ls -ial' # The output of all files in the "long" format with the inode
 
 # The output of the df and du commands in the "human" format
 alias df='df -h'
 alias du='du -h'
-
-alias wget='wget -c' # Download ftp file with continuation
-
 
 ## alias for commands that do not require correction, but require confirmation
 alias mv='nocorrect mv -i'      # renaming-moving with confirmation
@@ -199,9 +186,8 @@ alias rm='nocorrect rm -i'      # confirmation deletion
 alias rmf='nocorrect rm -f'     # forced removal
 alias rmrf='nocorrect rm -fR'   # forced recursive delete
 alias mkdir='nocorrect mkdir'   # creating directories without correction
-## Note: if you do not define nocorrect here,
-## zsh will aggressively suggest substituting existing names
-## when creating a catalog, copying, etc.
+
+# Note: if you do not define nocorrect here,zsh will aggressively suggest substituting existing names when creating a catalog, copying, etc.
 if [ -f /usr/bin/grc ]; then
  alias gcc="grc --colour=auto gcc"
  alias irclog="grc --colour=auto irclog"
@@ -212,11 +198,10 @@ if [ -f /usr/bin/grc ]; then
  alias traceroute="grc --colour=auto traceroute"
 fi
 
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-## Path to  HISTFILE
+# Path to  HISTFILE
 HISTFILE=~/.zsh_history
 SAVEHIST=5000
 HISTSIZE=5000
@@ -242,6 +227,7 @@ setopt COMPLETEALIASES
 setopt AUTO_MENU
 setopt MENUCOMPLETE
 setopt EXTENDEDGLOB NOMATCH NOTIFY
+
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
 pasteinit() {
@@ -267,25 +253,19 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.oh-my-zsh/cache
 zstyle ':completion:*' rehash true
 zstyle ':completion::complete:*' use-cache 1
-
-
-zstyle ':completion:*' file-sort name
 #zstyle ':completion:*' group-name '' #files first
+zstyle ':completion:*' file-sort name
 zstyle ':completion:*' list-colors ''
-
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' menu select=long-list select=0
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 
-
 # Key bindings
 bindkey -e
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey '^r'   history-incremental-search-backward
-
-
+bindkey '^[[A'  history-substring-search-up
+bindkey '^[[B'  history-substring-search-down
+bindkey '^r'    history-incremental-search-backward
 bindkey '^[[H'  beginning-of-line                          # Home key
 bindkey '^[[F'  end-of-line                                # End key
 bindkey '^[[5~' up-line-or-history                         # Page up key
@@ -294,7 +274,6 @@ bindkey '^[[2~' overwrite-mode                             # Insert key
 bindkey '^[[3~' delete-char                                # Delete key
 bindkey '^[[C'  forward-char                               # Right key
 bindkey '^[[D'  backward-char                              # Left key
-
 
 # Navigate words with ctrl+arrow keys
 bindkey '^[Oc'    forward-word                             #
@@ -305,14 +284,12 @@ bindkey '^H'      backward-kill-word                       # delete previous wor
 bindkey "\e[3;6~" backward-kill-line                       # ctrl+shift+delete
 bindkey "\e[3@"   backward-kill-line                       # ctrl+shift+delete
 bindkey '^[[Z'    undo    
-
 bindkey ' '       magic-space                              # also do history expansion on space
 bindkey '^I'      complete-word                            # complete on tab, leave expansion to _expand 
-bindkey '\e[1;6D' insert-cycledleft
-bindkey '\e[1;6C' insert-cycledright
-bindkey '^[[1;6D' insert-cycledleft
-bindkey '^[[1;6C' insert-cycledright
-
+bindkey '\e[1;6D' insert-cycledleft                        # ctrl+shiift+left
+bindkey '\e[1;6C' insert-cycledright                       # ctrl+shiift+right
+bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left
+bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right
 
 # escaping special characters in url, e.g. &,?, ~ and so on
 autoload -U url-quote-magic
@@ -322,7 +299,6 @@ zle -N self-insert url-quote-magic
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("expand-or-complete")
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
 ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
-
 
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
@@ -338,8 +314,6 @@ compinit -C
     zcompile "$zcompdump"
   fi
 } &!
-
-
 
 # Extracted archive
 extract () {
@@ -395,7 +369,6 @@ locate $1
 sd (){
 locate -r "/$1$"
 }
-
 
 # use /etc/hosts and known_hosts for hostname completion
 [ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
