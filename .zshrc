@@ -14,9 +14,10 @@ source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
 
 # Path to NVM
-export NVM_DIR="~/.nvm"
+export NVM_DIR="$HOME/.nvm"
 # Async load NVM
 function load_nvm() {
+
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
