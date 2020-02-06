@@ -111,7 +111,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git npm npx yarn zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
+plugins=(archlinux git npm npx yarn firewalld kate zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
@@ -138,7 +138,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # export EDITOR="/bin/nano"
-export EDITOR="/bin/kate"
+export EDITOR=kate
 
 # Setting a decimal point instead of a semicolon (required for some counting programs)
 export LC_NUMERIC="POSIX"
