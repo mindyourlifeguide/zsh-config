@@ -28,6 +28,9 @@ async_job nvm_worker sleep 0.1
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Support fonts with double-width icons
+# https://github.com/powerman/wcwidth-icons
 export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Path to Node
@@ -38,7 +41,6 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
- 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -161,6 +163,7 @@ alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
 alias h=history
 alias grep=egrep
 alias wget='wget -c' # Download ftp file with continuation
+alias ping='ping -c 1'
 
 # Global Aliases
 alias -g N='2>/dev/null'
@@ -178,7 +181,7 @@ alias li='ls -ial' # The output of all files in the "long" format with the inode
 
 # The output of the df and du commands in the "human" format
 alias df='df -h'
-alias du='du -h'
+alias du='du -h --max-depth=1 | sort -h'
 
 ## alias for commands that do not require correction, but require confirmation
 alias mv='nocorrect mv -i'      # renaming-moving with confirmation
