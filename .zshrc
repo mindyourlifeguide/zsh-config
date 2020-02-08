@@ -13,14 +13,37 @@ fi
 source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
 
+## Because fzf is conflict with zsh-autosuggestions, so this plugin only enable fzf key-bindings, such as Ctrl-T and Ctrl-R
+
+# install fzf to the oh-my-zsh user plugin directory
+if [[ ! -d ~/.oh-my-zsh/custom/plugins/fzf ]]; then
+ sudo git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
+ sudo ~/.oh-my-zsh/custom/plugins/fzf/install --bin
+fi
+
+export FZF_BASE=~/.oh-my-zsh/custom/plugins/fzf/
+
+# install fzf-zsh to the oh-my-zsh user plugin directory
+if [[ ! -d ~/.oh-my-zsh/custom/plugins/fzf-zsh ]]; then
+ sudo git clone https://github.com/Treri/fzf-zsh.git ~/.oh-my-zsh/custom/plugins/fzf-zsh
+fi
+
+# Install all-the-package-names for fzf
+
+NODE_DIR=`node -v`
+if [[ ! -d $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/all-the-package-names ]]; then
+   sudo npm -g i all-the-package-names
+fi
+
 # Path to NVM
 export NVM_DIR="$HOME/.nvm"
 # Async load NVM
 function load_nvm() {
-
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
+# n=$(which node);n=${n%/bin/node}; sudo chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
+
 # Initialize worker
 async_start_worker nvm_worker -n
 async_register_callback nvm_worker load_nvm
@@ -34,7 +57,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Path to Node
-export NODE_PATH=`which node`
+export NODE_PATH="$HOME/.nvm/versions/node/$NODE/bin/node"
 
 # Path to Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
@@ -111,7 +134,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git npm npx yarn firewalld kate zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
+plugins=(archlinux git npm npx yarn firewalld kate fzf zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
@@ -143,7 +166,18 @@ export EDITOR=kate
 # Setting a decimal point instead of a semicolon (required for some counting programs)
 export LC_NUMERIC="POSIX"
 
+BLACK="\033[30m"
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+PINK="\033[35m"
+CYAN="\033[36m"
+WHITE="\033[37m"
+NORMAL="\033[0;39m"
+
 # My Aliases
+alias nvmg='$NODE_PATH'
 alias g='git'
 alias ..='cd ..'
 alias home="cd ~/"
@@ -160,15 +194,15 @@ alias history='fc -il 1'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
 alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
+alias color='grep --color'
 alias h=history
-alias grep=egrep
+alias grep='egrep --color=auto'
 alias wget='wget -c' # Download ftp file with continuation
 alias ping='ping -c 1'
-
 # Global Aliases
 alias -g N='2>/dev/null'
 alias -g L='|less'
-alias -g G='|grep'
+alias -g G='|grep --color=auto'
 alias -g W='|wc'
 alias -g H='|head'
 alias -g T='|tail'
@@ -185,10 +219,10 @@ alias du='du -h --max-depth=1 | sort -h'
 
 ## alias for commands that do not require correction, but require confirmation
 alias mv='nocorrect mv -i'      # renaming-moving with confirmation
-alias cp='nocorrect cp -iR'     # recursive copy with confirmation
+alias cp='nocorrect cp -ri'     # recursive copy with confirmation
 alias rm='nocorrect rm -i'      # confirmation deletion
 alias rmf='nocorrect rm -f'     # forced removal
-alias rmrf='nocorrect rm -fR'   # forced recursive delete
+alias rmrf='nocorrect rm -rf'   # forced recursive delete
 alias mkdir='nocorrect mkdir'   # creating directories without correction
 
 # Note: if you do not define nocorrect here,zsh will aggressively suggest substituting existing names when creating a catalog, copying, etc.
@@ -252,6 +286,7 @@ zstyle ':completion:*' use-compctl false
 #ZSH tab select autocomplete path
 zstyle ':completion:*' menu select=1 interactive        #Tab menu options
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.oh-my-zsh/cache
@@ -267,9 +302,9 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 
 # Key bindings
 bindkey -e
-bindkey '^[[A'  history-substring-search-up
-bindkey '^[[B'  history-substring-search-down
-bindkey '^r'    history-incremental-search-backward
+bindkey '^[[A'  history-substring-search-up                # History up
+bindkey '^[[B'  history-substring-search-down              # History down
+bindkey '^r'    history-incremental-search-backward        # History search
 bindkey '^[[H'  beginning-of-line                          # Home key
 bindkey '^[[F'  end-of-line                                # End key
 bindkey '^[[5~' up-line-or-history                         # Page up key
@@ -287,28 +322,24 @@ bindkey '^[[1;5C' forward-word                             # ctrl+right
 bindkey '^H'      backward-kill-word                       # delete previous word with ctrl+backspace
 bindkey "\e[3;6~" backward-kill-line                       # ctrl+shift+delete
 bindkey "\e[3@"   backward-kill-line                       # ctrl+shift+delete
-bindkey '^[[Z'    undo    
+bindkey '^z'      push-input                               # defer current command ctrl+z
+bindkey '^['      push-line-or-edit                        # clear line esc
+bindkey '^\t\t'   push-line-or-edit                        # clear line tab+tab
 bindkey ' '       magic-space                              # also do history expansion on space
 bindkey '^I'      complete-word                            # complete on tab, leave expansion to _expand 
+
+# dircycle hotkey
 bindkey '\e[1;6D' insert-cycledleft                        # ctrl+shiift+left
 bindkey '\e[1;6C' insert-cycledright                       # ctrl+shiift+right
 bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left
 bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right
 
+
 # escaping special characters in url, e.g. &,?, ~ and so on
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-# Zsh color partial tab completions
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("expand-or-complete")
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
 
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
 
 # Execute code in the background to not affect the current session
 {
@@ -386,3 +417,98 @@ hosts=(
   localhost
 )
 zstyle ':completion:*:hosts' hosts $hosts
+
+
+# Zsh color partial tab completions
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("expand-or-complete")
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
+# List files in zsh with <TAB>
+# Usage:
+#   In the middle of the command line:
+#     (command being typed)<TAB>(resume typing)
+#
+#   At the beginning of the command line:
+#     <SPACE><TAB>
+#     <SPACE><SPACE><TAB>
+#
+# Notes:
+#   This does not affect other completions
+#   If you want 'cd ' or './' to be prepended, write in your .zshrc 'export TAB_LIST_FILES_PREFIX'
+#   I recommend to complement this with push-line-or edit (bindkey '^q' push-line-or-edit)
+function tab_list_files
+{
+  if [[ $#BUFFER == 0 ]]; then
+    BUFFER="ls " 
+    CURSOR=3
+    zle list-choices
+    zle backward-kill-word
+  elif [[ $BUFFER =~ ^[[:space:]][[:space:]].*$ ]]; then
+    BUFFER="./"
+    CURSOR=2
+    zle list-choices
+    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER="  " CURSOR=2
+  elif [[ $BUFFER =~ ^[[:space:]]*$ ]]; then
+    BUFFER="cd "
+    CURSOR=3
+    zle list-expand
+    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER=" " CURSOR=1
+  else
+    BUFFER_=$BUFFER
+    CURSOR_=$CURSOR
+    zle expand-or-complete || zle expand-or-complete || {
+      BUFFER="ls "
+      CURSOR=3
+      zle list-choices
+      BUFFER=$BUFFER_
+      CURSOR=$CURSOR_
+    }
+  fi
+}
+zle -N tab_list_files
+bindkey '^I' tab_list_files
+
+# uncomment the following line to prefix 'cd ' and './' 
+# when listing dirs and executables respectively
+export TAB_LIST_FILES_PREFIX
+
+# these two lines are usually included by oh-my-zsh, but just in case
+#autoload -Uz compinit
+#compinit
+
+# uncomment the following line to complement tab_list_files with ^q
+#bindkey '^q' push-line-or-edit
+
+## fzf functions
+
+fnpm() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    npm i $(echo $packages)
+}
+
+fyarn() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    yarn add $(echo $packages)
+}
+
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
