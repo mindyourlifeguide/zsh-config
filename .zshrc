@@ -13,13 +13,43 @@ autopair-init
 
 # fzf 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-FD_OPTIONS="--follow --exclude .git --exclude node_modules"
-export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | rg --type f --type l $FD_OPTIONS"
+export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || bat {} || tree -C {}"
 
-export FZF_CTRL_T_COMMAND="rg $FD_OPTIONS"
-export FZF_ALT_C_COMMAND="rg --type d $FD_OPTIONS"
-export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
-
+export FZF_DEFAULT_COMMAND="
+--hidden 
+--follow 
+--no-ignore-vcs 
+--layout reverse 
+--inline-info
+--preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat --style=full --color=always {}) || echo {}'
+"
+export FZF_CTRL_T_OPTS="
+--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null'
+--preview-window=right:60%:wrap 
+--select-1 
+--exit-0
+--height=100%
+--multi 
+--layout reverse
+--inline-info 
+--bind 'f2:toggle-preview'
+"
+export FZF_CTRL_R_OPTS="
+--preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500' --preview-window=right:60%
+--preview-window='right:hidden:wrap'
+--height=100%
+--layout reverse
+--info inline 
+--sort 
+--exact
+"
+export FZF_ALT_C_OPTS="
+--preview 'tree -C {} | head -200'
+--height=100%
+--bind 'f2:toggle-preview' 
+--sort
+--layout reverse 
+"
 # Install all-the-package-names for fzf
 
 NODE_DIR=`node -v`
@@ -158,17 +188,12 @@ export EDITOR=kate
 # Setting a decimal point instead of a semicolon (required for some counting programs)
 export LC_NUMERIC="POSIX"
 
-BLACK="\033[30m"
-RED="\033[31m"
-GREEN="\033[32m"
-YELLOW="\033[33m"
-BLUE="\033[34m"
-PINK="\033[35m"
-CYAN="\033[36m"
-WHITE="\033[37m"
-NORMAL="\033[0;39m"
 
 # My Aliases
+alias ls="exa"
+alias l="exa -lahF"
+alias find="rg"
+alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 alias nvmg='$NODE_PATH'
 alias g='git'
 alias ..='cd ..'
@@ -184,26 +209,26 @@ alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
 alias cra="create-react-app"
 alias history='fc -il 1'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
-alias iplocal='ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
-alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
-alias color='grep --color'
+alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
+alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
+alias color='rg --color'
 alias h=history
-#alias grep='egrep --color=auto'
+alias grep='rg -rl --color=auto'
 alias wget='wget -c' # Download ftp file with continuation
 alias ping='ping -c 1'
 # Global Aliases
 alias -g N='2>/dev/null'
 alias -g L='|less'
-alias -g G='|grep --color=auto'
+alias -g G='|rg --color=auto'
 alias -g W='|wc'
 alias -g H='|head'
 alias -g T='|tail'
 
 # Aliases for ls command options
-alias ls='ls -F --group-directories-first' #List directories in front of files
-alias ll='ls -lh'  # Output in "long" format with a "human" file size
-alias la='ls -A'   # List all files, including hidden, current and parent directories
-alias li='ls -ial' # The output of all files in the "long" format with the inode
+alias ls='exa -F --group-directories-first' #List directories in front of files
+alias ll='exa -lh'  # Output in "long" format with a "human" file size
+alias la='exa -A'   # List all files, including hidden, current and parent directories
+alias li='exa -ial' # The output of all files in the "long" format with the inode
 
 # The output of the df and du commands in the "human" format
 alias df='df -h'
@@ -472,7 +497,6 @@ export TAB_LIST_FILES_PREFIX
 #bindkey '^q' push-line-or-edit
 
 ## fzf functions
-
 fnpm() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
@@ -489,7 +513,7 @@ fyarn() {
 
 fbr() {
   local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
+  branches=$(git branch --all | rg -v HEAD) &&
   branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
