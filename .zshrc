@@ -2,31 +2,26 @@
 if [[ ! -a ~/.oh-my-zsh/.zsh-async ]]; then
  sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/.zsh-async
 fi
-
 source ~/.oh-my-zsh/.zsh-async/async.zsh
 
 # Install zsh-autopair if it’s not present
 if [[ ! -d ~/.oh-my-zsh/.zsh-autopair ]]; then
   sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/.zsh-autopair
 fi
-
 source ~/.oh-my-zsh/.zsh-autopair/autopair.zsh
 autopair-init
 
-## Because fzf is conflict with zsh-autosuggestions, so this plugin only enable fzf key-bindings, such as Ctrl-T and Ctrl-R
+# fzf 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# install fzf to the oh-my-zsh user plugin directory
-if [[ ! -d ~/.oh-my-zsh/custom/plugins/fzf ]]; then
- sudo git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
- sudo ~/.oh-my-zsh/custom/plugins/fzf/install --bin
-fi
+FD_OPTIONS="--follow --exclude .git --exclude node_modules"
+export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | rg --type f --type l $FD_OPTIONS"
 
-export FZF_BASE=~/.oh-my-zsh/custom/plugins/fzf/
+export FZF_CTRL_T_COMMAND="rg $FD_OPTIONS"
+export FZF_ALT_C_COMMAND="rg --type d $FD_OPTIONS"
+export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
 
-# install fzf-zsh to the oh-my-zsh user plugin directory
-if [[ ! -d ~/.oh-my-zsh/custom/plugins/fzf-zsh ]]; then
- sudo git clone https://github.com/Treri/fzf-zsh.git ~/.oh-my-zsh/custom/plugins/fzf-zsh
-fi
+#export RIPGREP_CONFIG_PATH ="/home/bohdan/.oh-my-zsh/plugins/ripgrep/"
 
 # Install all-the-package-names for fzf
 
@@ -134,7 +129,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 # 
 # defaults 
-plugins=(archlinux git npm npx yarn firewalld kate fzf zsh-autosuggestions zsh-completions history-substring-search dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
+plugins=(archlinux git npm npx yarn firewalld kate zsh-autosuggestions zsh-completions history-substring-search ripgrep fzf dircycle safe-paste command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
@@ -196,7 +191,7 @@ alias iplocal='ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -
 alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|grep "bytes from"'
 alias color='grep --color'
 alias h=history
-alias grep='egrep --color=auto'
+#alias grep='egrep --color=auto'
 alias wget='wget -c' # Download ftp file with continuation
 alias ping='ping -c 1'
 # Global Aliases
@@ -304,7 +299,7 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 bindkey -e
 bindkey '^[[A'  history-substring-search-up                # History up
 bindkey '^[[B'  history-substring-search-down              # History down
-bindkey '^r'    history-incremental-search-backward        # History search
+#bindkey '^r'    history-incremental-search-backward        # History search
 bindkey '^[[H'  beginning-of-line                          # Home key
 bindkey '^[[F'  end-of-line                                # End key
 bindkey '^[[5~' up-line-or-history                         # Page up key
@@ -512,3 +507,6 @@ fkill() {
     echo $pid | xargs kill -${1:-9}
   fi
 }
+
+# CANIUSE
+[ -f /home/bohdan/.config/cani/completions/_cani.zsh ] && source /home/bohdan/.config/cani/completions/_cani.zsh
