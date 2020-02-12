@@ -497,21 +497,77 @@ export TAB_LIST_FILES_PREFIX
 #bindkey '^q' push-line-or-edit
 
 ## fzf functions
-fnpm() {
+nif() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
     echo "$packages" &&
     npm i $(echo $packages)
 }
 
-fyarn() {
+nidf() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    npm i $(echo $packages) --save-dev
+}
+
+nigf() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    npm i $(echo $packages) --global
+}
+
+nuf() {
+    local packages
+    packages=$(exa node_modules | fzf -m) &&
+    echo "$packages" &&
+    npm uninstall $(echo $packages)
+}
+
+nugf() {
+    local packages
+    packages=$(exa $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/ | fzf -m) &&
+    echo "$packages" &&
+    npm uninstall $(echo $packages)
+}
+
+yaf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
     echo "$packages" &&
     yarn add $(echo $packages)
 }
 
-fbr() {
+yadf() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    yarn add $(echo $packages) --dev
+}
+
+yagf() {
+    local packages
+    packages=$(all-the-package-names | fzf -m) &&
+    echo "$packages" &&
+    yarn global add $(echo $packages)
+}
+
+yrf() {
+    local packages
+    packages=$(exa node_modules | fzf -m) &&
+    echo "$packages" &&
+    yarn remove $(echo $packages)
+}
+
+yrgf() {
+    local packages
+    packages=$(exa $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/ | fzf -m) &&
+    echo "$packages" &&
+    yarn remove $(echo $packages)
+}
+
+brf() {
   local branches branch
   branches=$(git branch --all | rg -v HEAD) &&
   branch=$(echo "$branches" |
@@ -519,7 +575,7 @@ fbr() {
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-fkill() {
+killf() {
   local pid
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
 
