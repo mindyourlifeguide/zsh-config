@@ -64,6 +64,11 @@ function load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
+#CAUTION
+#This is a command for managing the GLOBAL state of the node, which gives rights to overwrite in the system partition.
+#USE WITH CAUTION - a complete system CRASH is possible - make backups.
+#To work with nvm, local switching in projects is enough.
+#WARNING
 # n=$(which node);n=${n%/bin/node}; sudo chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
 
 # Initialize worker
@@ -319,37 +324,38 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 
 # Key bindings
 bindkey -e
-bindkey '^[[A'  history-substring-search-up                # History up
-bindkey '^[[B'  history-substring-search-down              # History down
-#bindkey '^r'    history-incremental-search-backward        # History search
+bindkey '^[[A'  history-substring-search-up                # Up key     | History up
+bindkey '^[[B'  history-substring-search-down              # Down key   | History down
+bindkey '^[[C'  forward-char                               # Right key
+bindkey '^[[D'  backward-char                              # Left key
+#bindkey '^r'    history-incremental-search-backward        #ctrl+r      | History search
 bindkey '^[[H'  beginning-of-line                          # Home key
 bindkey '^[[F'  end-of-line                                # End key
 bindkey '^[[5~' up-line-or-history                         # Page up key
 bindkey '^[[6~' down-line-or-history                       # Page down key
 bindkey '^[[2~' overwrite-mode                             # Insert key
 bindkey '^[[3~' delete-char                                # Delete key
-bindkey '^[[C'  forward-char                               # Right key
-bindkey '^[[D'  backward-char                              # Left key
+
 
 # Navigate words with ctrl+arrow keys
-bindkey '^[Oc'    forward-word                             #
-bindkey '^[Od'    backward-word                            # 
-bindkey '^[[1;5D' backward-word                            # ctrl+left
-bindkey '^[[1;5C' forward-word                             # ctrl+right
-bindkey '^H'      backward-kill-word                       # delete previous word with ctrl+backspace
-bindkey "\e[3;6~" backward-kill-line                       # ctrl+shift+delete
-bindkey "\e[3@"   backward-kill-line                       # ctrl+shift+delete
-bindkey '^z'      push-input                               # defer current command ctrl+z
-bindkey '^['      push-line-or-edit                        # clear line esc
-bindkey '^\t\t'   push-line-or-edit                        # clear line tab+tab
-bindkey ' '       magic-space                              # also do history expansion on space
-bindkey '^I'      complete-word                            # complete on tab, leave expansion to _expand 
+bindkey '^[Od'    backward-word                            # ctrl+left         | previous word
+bindkey '^[Oc'    forward-word                             # ctrl+right        | next word
+bindkey '^[[1;5D' backward-word                            # ctrl+left         | previous word
+bindkey '^[[1;5C' forward-word                             # ctrl+right        | next word
+bindkey '^H'      backward-kill-word                       # ctrl+backspace    | delete previous word with 
+bindkey "\e[3;6~" backward-kill-line                       # ctrl+shift+delete | clear line 
+bindkey "\e[3@"   backward-kill-line                       # ctrl+shift+delete | clear line 
+bindkey '^z'      push-input                               # ctrl+z            | defer current command 
+bindkey '^['      push-line-or-edit                        # esc               | clear line 
+bindkey '^\t\t'   push-line-or-edit                        # tab+tab           | clear line 
+bindkey ' '       magic-space                              # space             | also do history expansion on space
+bindkey '^I'      complete-word                            # tab               | complete on tab, leave expansion to _expand 
 
 # dircycle hotkey
-bindkey '\e[1;6D' insert-cycledleft                        # ctrl+shiift+left
-bindkey '\e[1;6C' insert-cycledright                       # ctrl+shiift+right
-bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left
-bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right
+bindkey '\e[1;6D' insert-cycledleft                        # ctrl+shiift+left  | dircycle previous dir 
+bindkey '\e[1;6C' insert-cycledright                       # ctrl+shiift+right | dircycle next dir
+bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left  | dircycle previous dir 
+bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right | dircycle next dir
 
 
 # escaping special characters in url, e.g. &,?, ~ and so on
@@ -367,60 +373,6 @@ zle -N self-insert url-quote-magic
   fi
 } &!
 
-# Extracted archive
-extract () {
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2) tar xvjf $1   ;;
-      *.tar.gz)  tar xvzf $1   ;;
-      *.tar.xz)  tar xvfJ $1   ;;
-      *.bz2)     bunzip2 $1    ;;
-      *.rar)     unrar x $1    ;;
-      *.gz)      gunzip $1     ;;
-      *.tar)     tar xvf $1    ;;
-      *.tbz2)    tar xvjf $1   ;;
-      *.tgz)     tar xvzf $1   ;;
-      *.zip)     unzip $1      ;;
-      *.Z)       uncompress $1 ;;
-      *.7z)      7z x $1       ;;
-      *)         echo "'$1' cannot be extracted via >extract<" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
-# Packaged archive
-pk () {
-    if [ $1 ] ; then
-        case $1 in
-            tbz)   	tar cjvf $2.tar.bz2 $2      ;;
-            tgz)   	tar czvf $2.tar.gz  $2   	;;
-            tar)  	tar cpvf $2.tar  $2       ;;
-			bz2)	bzip $2 ;;
-            gz)		gzip -c -9 -n $2 > $2.gz ;;
-			zip)   	zip -r $2.zip $2   ;;
-            7z)    	7z a $2.7z $2    ;;
-            *)     	echo "'$1' cannot be packed via pk()" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}
-
-# locate directories (if you use locate):
-# -------------------
-#locd () {
-#    locate $1 | xargs -I {} zsh -c 'if [ -d "{}" ]; then echo {}; fi'
-#}
-# locate files:
-sf (){
-locate $1
-}
-# locate directories:
-sd (){
-locate -r "/$1$"
-}
 
 # use /etc/hosts and known_hosts for hostname completion
 [ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
@@ -496,6 +448,61 @@ export TAB_LIST_FILES_PREFIX
 # uncomment the following line to complement tab_list_files with ^q
 #bindkey '^q' push-line-or-edit
 
+
+# Extracted archive
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2) tar xvjf $1   ;;
+      *.tar.gz)  tar xvzf $1   ;;
+      *.tar.xz)  tar xvfJ $1   ;;
+      *.bz2)     bunzip2 $1    ;;
+      *.rar)     unrar x $1    ;;
+      *.gz)      gunzip $1     ;;
+      *.tar)     tar xvf $1    ;;
+      *.tbz2)    tar xvjf $1   ;;
+      *.tgz)     tar xvzf $1   ;;
+      *.zip)     unzip $1      ;;
+      *.Z)       uncompress $1 ;;
+      *.7z)      7z x $1       ;;
+      *)         echo "'$1' cannot be extracted via >extract<" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Packaged archive
+pk () {
+    if [ $1 ] ; then
+        case $1 in
+            tbz)   	tar cjvf $2.tar.bz2 $2      ;;
+            tgz)   	tar czvf $2.tar.gz  $2   	;;
+            tar)  	tar cpvf $2.tar  $2       ;;
+			bz2)	bzip $2 ;;
+            gz)		gzip -c -9 -n $2 > $2.gz ;;
+			zip)   	zip -r $2.zip $2   ;;
+            7z)    	7z a $2.7z $2    ;;
+            *)     	echo "'$1' cannot be packed via pk()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# locate directories (if you use locate):
+# -------------------
+#locd () {
+#    locate $1 | xargs -I {} zsh -c 'if [ -d "{}" ]; then echo {}; fi'
+#}
+# locate files:
+sf (){
+locate $1
+}
+# locate directories:
+sd (){
+locate -r "/$1$"
+}
 ## fzf functions
 nif() {
     local packages
