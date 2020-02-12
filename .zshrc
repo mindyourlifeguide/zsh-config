@@ -533,6 +533,7 @@ nuf() {
 }
 
 nugf() {
+    NODE_DIR=`node -v`
     local packages
     packages=$(exa $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/ | fzf -m) &&
     echo "$packages" &&
@@ -568,6 +569,7 @@ yrf() {
 }
 
 yrgf() {
+    NODE_DIR=`node -v`
     local packages
     packages=$(exa $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/ | fzf -m) &&
     echo "$packages" &&
