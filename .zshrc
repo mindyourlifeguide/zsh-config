@@ -502,35 +502,35 @@ sd (){
 locate -r "/$1$"
 }
 ## fzf functions
-nif() {
+naf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
     echo "$packages" &&
     npm i $(echo $packages)
 }
 
-nidf() {
+nadf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
     echo "$packages" &&
     npm i $(echo $packages) --save-dev
 }
 
-nigf() {
+nagf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
     echo "$packages" &&
     npm i $(echo $packages) --global
 }
 
-nuf() {
+nrf() {
     local packages
     packages=$(exa node_modules | fzf -m) &&
     echo "$packages" &&
     npm uninstall $(echo $packages)
 }
 
-nugf() {
+nrgf() {
     NODE_DIR=`node -v`
     local packages
     packages=$(exa $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/ | fzf -m) &&
