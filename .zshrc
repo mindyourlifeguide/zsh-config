@@ -31,7 +31,6 @@ export FZF_CTRL_T_OPTS="
 --height=100%
 --multi 
 --layout reverse
---inline-info 
 --bind 'f2:toggle-preview'
 "
 export FZF_CTRL_R_OPTS="
@@ -39,7 +38,6 @@ export FZF_CTRL_R_OPTS="
 --preview-window='right:hidden:wrap'
 --height=100%
 --layout reverse
---info inline 
 --sort 
 --exact
 "
