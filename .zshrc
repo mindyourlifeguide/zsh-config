@@ -18,11 +18,15 @@ export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color alw
 export FZF_DEFAULT_COMMAND="
 --hidden 
 --follow 
---no-ignore-vcs 
---layout reverse 
---inline-info
---preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat --style=full --color=always {}) || echo {}'
+--no-ignore-vcs  
+--preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat --style=full --color=always {}) || echo {}'--layout reverse
 "
+
+export FZF_DEFAULT_OPTS="
+--height=100%
+--layout reverse
+"
+
 export FZF_CTRL_T_OPTS="
 --preview '($FZF_PREVIEW_COMMAND) 2> /dev/null'
 --preview-window=right:60%:wrap 
@@ -30,14 +34,14 @@ export FZF_CTRL_T_OPTS="
 --exit-0
 --height=100%
 --multi 
---layout reverse
 --bind 'f2:toggle-preview'
 "
 export FZF_CTRL_R_OPTS="
---preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500' --preview-window=right:60%
+--preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500' 
+--preview-window=right:60%
+--layout reverse
 --preview-window='right:hidden:wrap'
 --height=100%
---layout reverse
 --sort 
 --exact
 "
@@ -45,8 +49,7 @@ export FZF_ALT_C_OPTS="
 --preview 'tree -C {} | head -200'
 --height=100%
 --bind 'f2:toggle-preview' 
---sort
---layout reverse 
+--sort 
 "
 # Install all-the-package-names for fzf
 
@@ -193,6 +196,8 @@ export LC_NUMERIC="POSIX"
 
 
 # My Aliases
+alias cu="cani use"
+alias cs="cani show"
 alias ls="exa"
 alias l="exa -lahF"
 alias find="rg"

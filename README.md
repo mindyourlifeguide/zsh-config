@@ -76,13 +76,18 @@ To work with nvm, local switching in projects is enough.
 
 ##### yaf/naf | yarn/npm add package
 
-![yarn/npm add package](https://i.imgur.com/JrN4lhg.png)
+![yarn/npm add package](https://i.imgur.com/y3q687M.png)
 
 ##### yrf/nrf | yarn/npm remove package
 
-![yarn/npm remove package](https://i.imgur.com/z89iWtk.png)
+![yarn/npm remove package](https://i.imgur.com/stdDK6V.png)
 
 ##### brf | choose branch
 
-![choose branch](https://i.imgur.com/KzeUR3J.png)
+![choose branch](https://i.imgur.com/Jl4FRun.png)
 
+##### cu | cani use
+
+![cani use](https://i.imgur.com/PgoGQ70.png)
+
+![cani use](https://i.imgur.com/BGfsl7T.png)
