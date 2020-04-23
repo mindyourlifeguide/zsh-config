@@ -27,7 +27,7 @@ fi
 
 # Install zsh-async if it’s not present
 if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-async ]]; then
- sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/custom/plugins/zsh-async
+  sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/custom/plugins/zsh-async
 fi
 source ~/.oh-my-zsh/custom/plugins/zsh-async/async.zsh
 
@@ -61,17 +61,16 @@ fi
 export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Install cani if it’s not present
-if [[ ! -d ~/.config/cani ]]; then
-   sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
-    cd /tmp/cani
-    gem install cani
-    cd ..
-    sudo rm -rf cani
-fi
+# if [[ ! -d ~/.config/cani ]]; then
+#    sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
+#     cd /tmp/cani
+#     gem install cani
+#     cd ..
+#     sudo rm -rf cani
+# fi
 
 # Install command-not-found if it’s not present
 source /usr/share/doc/pkgfile/command-not-found.zsh
-
 
 
 
@@ -119,10 +118,13 @@ fi
 export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || bat {} || tree -C {}"
 
 export FZF_DEFAULT_COMMAND="
+--color=always {}) || echo {}'
 --follow
 --hidden
+--layout reverse
 --no-ignore-vcs
---preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat --style=full --color=always {}) || echo {}'--layout reverse
+--preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat 
+--style=full 
 "
 
 export FZF_DEFAULT_OPTS="
@@ -153,7 +155,7 @@ export FZF_ALT_C_OPTS="
 --sort
 "
 
-
+ 
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -257,7 +259,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # export EDITOR="/bin/nano"
-export EDITOR=kate
+export EDITOR="/opt/sublime_text/sublime_text"
 
 # Setting a decimal point instead of a semicolon (required for some counting programs)
 export LC_NUMERIC="POSIX"
@@ -265,18 +267,19 @@ export LC_NUMERIC="POSIX"
 
 
 # My Aliases
-alias ..='cd ..'
+alias nano="nano -m"
+alias ..="cd .."
 alias Files="cd /home/bohdan/Files/"
 alias Storage="cd /home/bohdan/Storage/"
 alias Work="cd /home/bohdan/Work/"
 alias c="clear"
 # alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
-alias cat="bat"
+# alias cat="bat"
 alias color='rg --color'
 alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
-alias find="rg"
+#alias find="rg"
 alias g='git'
 alias grep='rg -rl --color=auto'
 alias history='fc -il 1'
@@ -672,8 +675,7 @@ yrgf() {
 brf() {
   local branches branch
   branches=$(git branch --all | rg -v HEAD) &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
