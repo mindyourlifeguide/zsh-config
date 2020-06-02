@@ -232,7 +232,7 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 #
 # defaults
-plugins=(archlinux git npm npx yarn docker firewalld nmap kate zsh-autosuggestions zsh-completions history-substring-search fzf dircycle command-not-found common-aliases you-should-use magic-enter colored-man-pages sudo zsh-256color fast-syntax-highlighting)
+plugins=(archlinux git npm npx yarn docker firewalld nmap kate zsh-autosuggestions zsh-completions history-substring-search fzf dircycle command-not-found common-aliases you-should-use colored-man-pages sudo zsh-256color fast-syntax-highlighting)
 #
 source $ZSH/oh-my-zsh.sh
 #
@@ -267,6 +267,7 @@ export LC_NUMERIC="POSIX"
 
 
 # My Aliases
+alias hblockoff="HBLOCK_SOURCES='' hblock"
 alias nano="nano -m"
 alias ..="cd .."
 alias Files="cd /home/bohdan/Files/"
@@ -274,19 +275,19 @@ alias Storage="cd /home/bohdan/Storage/"
 alias Work="cd /home/bohdan/Work/"
 alias c="clear"
 # alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
-# alias cat="bat"
+alias cat="bat"
 alias color='rg --color'
 alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
-#alias find="rg"
+# alias find="rg"
 alias g='git'
 alias grep='rg -rl --color=auto'
 alias history='fc -il 1'
 alias home="cd ~/"
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
-# alias ipscan='echo 192.168.0.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
+alias ipscan='echo 192.168.{1..254}.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
 alias l="exa -lahF"
 alias ls="exa"
 alias nvmg='$NODE_PATH'
@@ -419,7 +420,8 @@ bindkey '^z'      push-input                               # ctrl+z            |
 bindkey '^['      kill-whole-line                          # esc               | clear line
 bindkey '^\t\t'   kill-whole-line                          # tab+tab           | clear line
 bindkey ' '       magic-space                              # space             | also do history expansion on space
-bindkey '^I'      complete-word                            # tab               | complete on tab, leave expansion to _expand
+# bindkey '^I'      complete-word                            # tab               | complete on tab, leave expansion to _expand
+bindkey '^I'      autosuggest-accept                       # tab               | autosuggest or comlete on tab 
 
 # dircycle hotkey
 bindkey '\E[1;6D' insert-cycledleft                        # ctrl+shiift+left  | dircycle previous dir
@@ -441,23 +443,23 @@ bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right |
 
 
 # use /etc/hosts and known_hosts for hostname completion
-[ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
-[ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-[ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
-hosts=(
-  "$_global_ssh_hosts[@]"
-  "$_ssh_hosts[@]"
-  "$_etc_hosts[@]"
-  "$HOST"
-  localhost
-)
-zstyle ':completion:*:hosts' hosts $hosts
+# [ -r /etc/ssh/ssh_known_hosts ] && _global_ssh_hosts=(${${${${(f)"$(</etc/ssh/ssh_known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _global_ssh_hosts=()
+# [ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+# [ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+# hosts=(
+#   "$_global_ssh_hosts[@]"
+#   "$_ssh_hosts[@]"
+#   "$_etc_hosts[@]"
+#   "$HOST"
+#   localhost
+# )
+# zstyle ':completion:*:hosts' hosts $hosts
 
 
 
 # escaping special characters in url, e.g. &,?, ~ and so on
 autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
+# zle -N self-insert url-quote-magic
 
 
 
@@ -476,7 +478,7 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(expand-or-complete bracketed-paste accept-line push-line-or-edit)
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty bracketed-paste accept-line push-line-or-edit)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 ZSH_HIGHLIGHT_MAXLENGTH=300
@@ -500,46 +502,46 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS+=brackets
 #   If you want 'cd ' or './' to be prepended, write in your .zshrc 'export TAB_LIST_FILES_PREFIX'
 #   I recommend to complement this with push-line-or edit (bindkey '^q' push-line-or-edit)
 
-function tab_list_files
-{
-  if [[ $#BUFFER == 0 ]]; then
-    BUFFER="ls "
-    CURSOR=3
-    zle list-choices
-    zle backward-kill-word
-  elif [[ $BUFFER =~ ^[[:space:]][[:space:]].*$ ]]; then
-    BUFFER="./"
-    CURSOR=2
-    zle list-choices
-    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER="  " CURSOR=2
-  elif [[ $BUFFER =~ ^[[:space:]]*$ ]]; then
-    BUFFER="cd "
-    CURSOR=3
-    zle list-choices
-    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER=" " CURSOR=1
-  else
-    BUFFER_=$BUFFER
-    CURSOR_=$CURSOR
-    zle expand-or-complete || zle expand-or-complete || {
-      BUFFER="ls "
-      CURSOR=3
-      zle list-choices
-      BUFFER=$BUFFER_
-      CURSOR=$CURSOR_
-    }
-  fi
-}
-zle -N tab_list_files
-bindkey '^I' tab_list_files
-# uncomment the following line to prefix 'cd ' and './'
-# when listing dirs and executables respectively
-export TAB_LIST_FILES_PREFIX
-# these two lines are usually included by oh-my-zsh, but just in case
-#autoload -Uz compinit
-#compinit
+# function tab_list_files
+# {
+#   if [[ $#BUFFER == 0 ]]; then
+#     BUFFER="ls "
+#     CURSOR=3
+#     zle list-choices
+#     zle backward-kill-word
+#   elif [[ $BUFFER =~ ^[[:space:]][[:space:]].*$ ]]; then
+#     BUFFER="./"
+#     CURSOR=2
+#     zle list-choices
+#     [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER="  " CURSOR=2
+#   elif [[ $BUFFER =~ ^[[:space:]]*$ ]]; then
+#     BUFFER="cd "
+#     CURSOR=3
+#     zle list-choices
+#     [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER=" " CURSOR=1
+#   else
+#     BUFFER_=$BUFFER
+#     CURSOR_=$CURSOR
+#     zle expand-or-complete || zle expand-or-complete || {
+#       BUFFER="ls "
+#       CURSOR=3
+#       zle list-choices
+#       BUFFER=$BUFFER_
+#       CURSOR=$CURSOR_
+#     }
+#   fi
+# }
+# zle -N tab_list_files
+# bindkey '^I' tab_list_files
+# # uncomment the following line to prefix 'cd ' and './'
+# # when listing dirs and executables respectively
+# export TAB_LIST_FILES_PREFIX
+# # these two lines are usually included by oh-my-zsh, but just in case
+# #autoload -Uz compinit
+# #compinit
 
-# uncomment the following line to complement tab_list_files with ^q
-#bindkey '^q' push-line-or-edit
+# # uncomment the following line to complement tab_list_files with ^q
+# #bindkey '^q' push-line-or-edit
 
 
 
@@ -570,14 +572,14 @@ extract () {
 pk () {
     if [ $1 ] ; then
         case $1 in
-            tbz)   	tar cjvf $2.tar.bz2 $2      ;;
-            tgz)   	tar czvf $2.tar.gz  $2   	;;
-            tar)  	tar cpvf $2.tar  $2       ;;
-			bz2)	bzip $2 ;;
-            gz)		gzip -c -9 -n $2 > $2.gz ;;
-			zip)   	zip -r $2.zip $2   ;;
-            7z)    	7z a $2.7z $2    ;;
-            *)     	echo "'$1' cannot be packed via pk()" ;;
+            tbz)    tar cjvf $2.tar.bz2 $2      ;;
+            tgz)    tar czvf $2.tar.gz  $2    ;;
+            tar)    tar cpvf $2.tar  $2       ;;
+      bz2)  bzip $2 ;;
+            gz)   gzip -c -9 -n $2 > $2.gz ;;
+      zip)    zip -r $2.zip $2   ;;
+            7z)     7z a $2.7z $2    ;;
+            *)      echo "'$1' cannot be packed via pk()" ;;
         esac
     else
         echo "'$1' is not a valid file"
@@ -694,6 +696,8 @@ copysite() {`wget -m -l 10 -e robots=off -p -k -E --reject-regex "wp" --no-check
 
 # 1 - list sites 2 - path to save
 copysitelist () {`wget -m -l 10 -e robots=off -p -k -E --reject-regex "wp" --no-check-certificate -U="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36" -i $1 -P $2`}
+
+
 
 # CANIUSE
 [ -f /home/bohdan/.config/cani/completions/_cani.zsh ] && source /home/bohdan/.config/cani/completions/_cani.zsh
