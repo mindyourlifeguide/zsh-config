@@ -192,7 +192,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=7
+export UPDATE_ZSH_DAYS=7
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
@@ -212,7 +212,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -241,7 +241,8 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+ export LANG=en_US.UTF-8
+# export LANG=ru_RU.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -251,7 +252,7 @@ source $ZSH/oh-my-zsh.sh
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+ export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -267,8 +268,6 @@ export LC_NUMERIC="POSIX"
 
 
 # My Aliases
-alias hblockoff="HBLOCK_SOURCES='' hblock"
-alias nano="nano -m"
 alias ..="cd .."
 alias Files="cd /home/bohdan/Files/"
 alias Storage="cd /home/bohdan/Storage/"
@@ -282,7 +281,8 @@ alias cs="cani show"
 alias cu="cani use"
 # alias find="rg"
 alias g='git'
-alias grep='rg -rl --color=auto'
+# alias grep='rg -rl --color=auto'
+alias hblock-off="HBLOCK_SOURCES='' hblock"
 alias history='fc -il 1'
 alias home="cd ~/"
 alias ipglobal='curl -s https://checkip.amazonaws.com'
@@ -290,6 +290,7 @@ alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|c
 alias ipscan='echo 192.168.{1..254}.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
 alias l="exa -lahF"
 alias ls="exa"
+alias nano="nano -m"
 alias nvmg='$NODE_PATH'
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh &!"
 alias ping='ping -c 1'
@@ -469,6 +470,7 @@ autoload -U url-quote-magic
 pasteinit() {
   OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
   zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+
 }
 
 pastefinish() {
@@ -683,7 +685,7 @@ brf() {
 
 killf() {
   local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  pid=$(ps -ef | sed 1d | fzf -m --reverse | awk '{print $2}')
 
   if [ "x$pid" != "x" ]
   then

@@ -1,6 +1,6 @@
 # **OhMyZsh + fzf + ripgrep + bat + caniuse = ❤️**
 
-I am using [Linux Manjaro Kde](https://manjaro.org/download/). Do the adaptation of the solution for yourself according to your system, as some steps may differ from mine in places.
+I am using Arch Kde. Do the adaptation of the solution for yourself according to your system, as some steps may differ from mine in places.
 
 This is my personal config, which I am constantly improving. It is based on [OhMyZsh](https://ohmyz.sh/), a [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme.
 
@@ -34,6 +34,9 @@ The solution to the problem of slow paste paste-init / paste-finish using [brack
 
  There is also escaping special characters in url, e.g. `&,?, ~` and so on.
 
+
+
+**USE WITH CAUTION** 
 Also, to use node globally when starting the system of the last selected version, the `nvmpath.sh` file is used, which I put in `/etc/profile.d/`.
 
 *File contents:*
