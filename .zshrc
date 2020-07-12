@@ -118,12 +118,12 @@ fi
 export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || bat {} || tree -C {}"
 
 export FZF_DEFAULT_COMMAND="
---color=always {}) || echo {}'
+--color=always {}) || echo {}
 --follow
 --hidden
 --layout reverse
 --no-ignore-vcs
---preview '([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat 
+--preview ([[ -d {} ]] && tree -C {}) || ([[ -f {} ]] && bat 
 --style=full 
 "
 
@@ -604,6 +604,8 @@ locate -r "/$1$"
 }
 
 ## fzf functions
+
+### npm
 naf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
@@ -640,6 +642,7 @@ nrgf() {
     npm uninstall $(echo $packages)
 }
 
+### yarn
 yaf() {
     local packages
     packages=$(all-the-package-names | fzf -m) &&
@@ -676,11 +679,27 @@ yrgf() {
     yarn remove $(echo $packages)
 }
 
+### git
 brf() {
   local branches branch
   branches=$(git branch --all | rg -v HEAD) &&
   branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+
+# Pacman (yay) & system function
+add() {
+  yay -Slq | fzf -m  --reverse --preview 'yay -Si {1}' | xargs -ro yay -S
+}
+
+remove() {
+  yay -Qqe | fzf -m  --reverse --preview 'yay -Si {1}' | xargs -ro yay -R
+}
+
+clean() {
+  sudo pacman -Rsn $(pacman -Qdtq)
+  sudo pacman -Scc
 }
 
 killf() {
@@ -692,6 +711,18 @@ killf() {
     echo $pid | xargs kill -${1:-9}
   fi
 }
+
+# VPN+Remmina
+on() {
+  sudo wg-quick up client
+  nohup prime remmina >/dev/null 2>&1 &!
+}
+
+off() {
+  killall remmina
+  sudo wg-quick down client
+}
+
 
 # Download
 copysite() {`wget -m -l 10 -e robots=off -p -k -E --reject-regex "wp" --no-check-certificate -U="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36" $1`}
