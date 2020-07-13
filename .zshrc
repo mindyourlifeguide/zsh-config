@@ -713,9 +713,10 @@ killf() {
 }
 
 # VPN+Remmina
+export REMMINA=`cat $HOME/.remmina_cli`
 on() {
   sudo wg-quick up client
-  nohup prime remmina >/dev/null 2>&1 &!
+  nohup prime remmina -c $REMMINA >/dev/null 2>&1 &!
 }
 
 off() {
