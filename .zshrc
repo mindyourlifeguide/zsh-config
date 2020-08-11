@@ -279,12 +279,14 @@ alias color='rg --color'
 alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
+alias diff='diff --color=auto'
 # alias find="rg"
 alias g='git'
-# alias grep='rg -rl --color=auto'
+alias grep='rg -rl --color=auto'
 alias hblock-off="HBLOCK_SOURCES='' hblock"
 alias history='fc -il 1'
 alias home="cd ~/"
+alias ip='ip -color=auto'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
 alias ipscan='echo 192.168.{1..254}.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
@@ -697,9 +699,17 @@ remove() {
   yay -Qqe | fzf -m  --reverse --preview 'yay -Si {1}' | xargs -ro yay -R
 }
 
+# add() {
+#   pikaur -Sslq | fzf -m  --reverse --preview 'pikaur -Si {1}' | xargs -ro pikaur -S
+# }
+
+# remove() {
+#   pikaur -Qqe | fzf -m  --reverse --preview 'pikaur -Si {1}' | xargs -ro pikaur -R 
+# }
+
 clean() {
   sudo pacman -Rsn $(pacman -Qdtq)
-  sudo pacman -Scc
+  sudo yay -Scc
 }
 
 killf() {
@@ -712,18 +722,26 @@ killf() {
   fi
 }
 
-# VPN+Remmina
-export REMMINA=`cat $HOME/.remmina_cli`
+# VPN + Remmina / xfreerdp
+# export REMMINA=`cat $HOME/.remmina_cli`
+# on() {
+#   sudo wg-quick up client
+#   nohup prime remmina -c $REMMINA >/dev/null 2>&1 &!
+# }
+# off() {
+#   killall remmina
+#   sudo wg-quick down client
+# }
+
 on() {
   sudo wg-quick up client
-  nohup prime remmina -c $REMMINA >/dev/null 2>&1 &!
+  ./.work.sh
 }
 
 off() {
-  killall remmina
+  killall xfreerdp
   sudo wg-quick down client
 }
-
 
 # Download
 copysite() {`wget -m -l 10 -e robots=off -p -k -E --reject-regex "wp" --no-check-certificate -U="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36" $1`}
