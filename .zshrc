@@ -167,8 +167,11 @@ source /home/bohdan/.zsh/function/work.zsh
 
 # CANIUSE
 [ -f /home/bohdan/.config/cani/completions/_cani.zsh ] && source /home/bohdan/.config/cani/completions/_cani.zsh
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
 
 # zoxide
 eval "$(zoxide init zsh)"
+
+# VOLTA
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
