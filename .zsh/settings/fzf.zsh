@@ -1,7 +1,7 @@
 # fzf-settings
 ## Install all-the-package-names for fzf
-if [[ ! -d $HOME/.nvm/versions/node/$NODE_DIR/lib/node_modules/all-the-package-names ]]; then
-   sudo npm -g i all-the-package-names
+if [[ ! -d $HOME/.volta/tools/image/packages/all-the-package-names ]]; then
+   sudo volta install all-the-package-names
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

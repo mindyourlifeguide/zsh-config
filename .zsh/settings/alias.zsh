@@ -11,7 +11,7 @@ alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
 alias diff='diff --color=auto'
-# alias find="rg"
+alias find="fd"
 alias g='git'
 alias grep='rg -rl --color=auto'
 alias hblock-off="HBLOCK_SOURCES='' hblock"
@@ -20,11 +20,8 @@ alias home="cd ~/"
 alias ip='ip -color=auto'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
-alias ipscan='echo 192.168.{1..254}.{1..254}|xargs -n1 -P0 ping -c1|rg "bytes from"'
-alias l="exa -lahF"
-alias ls="exa"
+alias ipscan='echo {1..255}.{1..255}.{1..255}.{1..255}|xargs -n1 -P0 ping -c1|rg "bytes from"'
 alias nano="nano -m"
-alias nvmg='$NODE_PATH'
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh &!"
 alias ping='ping -c 1'
 alias s="yst"
@@ -40,10 +37,15 @@ alias -g T='|tail'
 alias -g W='|wc'
 
 # Aliases for ls command options
-alias la='exa -A'   # List all files, including hidden, current and parent directories
-alias li='exa -ial' # The output of all files in the "long" format with the inode
-alias ll='exa -lh'  # Output in "long" format with a "human" file size
-alias ls='exa -F --group-directories-first' #List directories in front of files
+alias ls='lsd'
+alias la='ls -A'   # List all files, including hidden, current and parent directories
+alias li='ls -ial' # The output of all files in the "long" format with the inode
+alias ll='ls -lh'  # Output in "long" format with a "human" file size
+# alias lf='ls -F --group-directories-first' #List directories in front of files
+alias lf='ls -F --group-dirs' #List directories in front of files
+alias l='ls -l'
+alias lla='ls -la'
+alias lt='ls --tree'
 
 # The output of the df and du commands in the "human" format
 alias df='df -h'

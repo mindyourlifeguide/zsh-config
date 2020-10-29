@@ -26,10 +26,10 @@ if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-completions ]]; then
 fi
 
 # Install zsh-async if it’s not present
-if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-async ]]; then
-  sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/custom/plugins/zsh-async
-fi
-source ~/.oh-my-zsh/custom/plugins/zsh-async/async.zsh
+# if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-async ]]; then
+#   sudo git clone https://github.com/mafredri/zsh-async.git ~/.oh-my-zsh/custom/plugins/zsh-async
+# fi
+# source ~/.oh-my-zsh/custom/plugins/zsh-async/async.zsh
 
 # Install zsh-autopair if it’s not present
 if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autopair ]]; then
@@ -61,13 +61,13 @@ fi
 export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Install cani if it’s not present
-# if [[ ! -d ~/.config/cani ]]; then
-#    sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
-#     cd /tmp/cani
-#     gem install cani
-#     cd ..
-#     sudo rm -rf cani
-# fi
+if [[ ! -d ~/.config/cani ]]; then
+   sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
+    cd /tmp/cani
+    gem install cani
+    cd ..
+    sudo rm -rf cani
+fi
 
 # Install command-not-found if it’s not present
 source /usr/share/doc/pkgfile/command-not-found.zsh
