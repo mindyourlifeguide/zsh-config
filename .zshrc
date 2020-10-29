@@ -82,7 +82,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # defaults
 plugins=(
     archlinux 
-    git 
+    git
     npm 
     npx 
     yarn 
@@ -93,7 +93,7 @@ plugins=(
     zsh-completions 
     history-substring-search 
     fzf 
-    dirhistory 
+    dircycle 
     command-not-found 
     common-aliases 
     you-should-use 
@@ -140,38 +140,31 @@ zle -N self-insert url-quote-magic
 
 
 ### system programs
-source /home/bohdan/.config/broot/launcher/bash/br
+source ~/.config/broot/launcher/bash/br
 
 ### settings
-source /home/bohdan/.zsh/settings/preinstall.zsh
-source /home/bohdan/.zsh/settings/paste.zsh
-source /home/bohdan/.zsh/settings/node.zsh
-source /home/bohdan/.zsh/settings/fzf.zsh
-source /home/bohdan/.zsh/settings/alias.zsh
-source /home/bohdan/.zsh/settings/history_completion.zsh
-source /home/bohdan/.zsh/settings/keybindings.zsh
-source /home/bohdan/.zsh/settings/zcompdump.zsh
+source ~/.zsh/settings/preinstall.zsh
+source ~/.zsh/settings/paste.zsh
+source ~/.zsh/settings/node.zsh
+source ~/.zsh/settings/fzf.zsh
+source ~/.zsh/settings/alias.zsh
+source ~/.zsh/settings/history_completion.zsh
+source ~/.zsh/settings/keybindings.zsh
+source ~/.zsh/settings/zcompdump.zsh
 
 ### function
-source /home/bohdan/.zsh/function/system.zsh
-source /home/bohdan/.zsh/function/pacman.zsh
-source /home/bohdan/.zsh/function/search.zsh
-source /home/bohdan/.zsh/function/archive.zsh
+source ~/.zsh/function/system.zsh
+source ~/.zsh/function/pacman.zsh
+source ~/.zsh/function/search.zsh
+source ~/.zsh/function/archive.zsh
 
-source /home/bohdan/.zsh/function/git.zsh
-source /home/bohdan/.zsh/function/npm.zsh
-source /home/bohdan/.zsh/function/yarn.zsh
-source /home/bohdan/.zsh/function/download_site.zsh
-source /home/bohdan/.zsh/function/work.zsh
+source ~/.zsh/function/git.zsh
+source ~/.zsh/function/npm.zsh
+source ~/.zsh/function/yarn.zsh
+source ~/.zsh/function/download_site.zsh
+source ~/.zsh/function/work.zsh
 
-
-# CANIUSE
-[ -f /home/bohdan/.config/cani/completions/_cani.zsh ] && source /home/bohdan/.config/cani/completions/_cani.zsh
 
 # zoxide
 eval "$(zoxide init zsh)"
-
-# VOLTA
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
 

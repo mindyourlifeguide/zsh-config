@@ -1,8 +1,4 @@
 # fzf-settings
-## Install all-the-package-names for fzf
-if [[ ! -d $HOME/.volta/tools/image/packages/all-the-package-names ]]; then
-   sudo volta install all-the-package-names
-fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || bat {} || tree -C {}"

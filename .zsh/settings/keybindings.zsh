@@ -28,14 +28,7 @@ bindkey ' '       magic-space                              # space             |
 bindkey '^I'      autosuggest-accept                       # tab               | autosuggest or comlete on tab 
 
 # dircycle hotkey
-# bindkey '\E[1;6D' insert-cycledleft                        # ctrl+shiift+left  | dircycle previous dir
-# bindkey '\E[1;6C' insert-cycledright                       # ctrl+shiift+right | dircycle next dir
-# bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left  | dircycle previous dir
-# bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right | dircycle next dir
-
-# dircycle hotkey
-# bindkey '\E[1;6D' dirhistory_zle_dirhistory_back                        # ctrl+shiift+left  | dircycle previous dir
-# bindkey '\E[1;6C' dirhistory_zle_dirhistory_future                      # ctrl+shiift+right | dircycle next dir
-# bindkey '^[[1;6D' dirhistory_zle_dirhistory_back                        # ctrl+shiift+left  | dircycle previous dir
-# bindkey '^[[1;6C' dirhistory_zle_dirhistory_future                      # ctrl+shiift+right | dircycle next dir
- 
+bindkey '\E[1;6D' insert-cycledleft                        # ctrl+shiift+left  | previous dir
+bindkey '\E[1;6C' insert-cycledright                       # ctrl+shiift+right | next dir
+bindkey '^[[1;6D' insert-cycledleft                        # ctrl+shiift+left  | previous dir
+bindkey '^[[1;6C' insert-cycledright                       # ctrl+shiift+right |  next dir
