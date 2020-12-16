@@ -51,14 +51,14 @@ fi
 # Install wcwidth-icons if it’s not present
 ## Support fonts with double-width icons
 ## https://github.com/powerman/wcwidth-icons
-if [[ ! -f /usr/lib/libwcwidth-icons.so ]]; then
-  sudo git clone https://github.com/powerman/wcwidth-icons.git /tmp/wcwidth-icons
-  cd /tmp/wcwidth-icons
-  sudo make install
-  cd ..
-  sudo rm -rf wcwidth-icons
-fi
-export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
+# if [[ ! -f /usr/lib/libwcwidth-icons.so ]]; then
+#   sudo git clone https://github.com/powerman/wcwidth-icons.git /tmp/wcwidth-icons
+#   cd /tmp/wcwidth-icons
+#   sudo make install
+#   cd ..
+#   sudo rm -rf wcwidth-icons
+# fi
+# export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Install cani if it’s not present
 if [[ ! -d ~/.config/cani ]]; then

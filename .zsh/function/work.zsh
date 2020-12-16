@@ -14,7 +14,11 @@ on() {
   ~/.zsh/work.sh
 }
 
+
+
 off() {
   killall xfreerdp
   sudo wg-quick down client
 } 
+
+

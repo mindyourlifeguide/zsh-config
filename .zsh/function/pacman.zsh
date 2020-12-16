@@ -17,5 +17,5 @@ remove() {
 
 clean() {
   sudo pacman -Rsn $(pacman -Qdtq)
-  sudo yay -Scc
+  yay -Scc
 } 
