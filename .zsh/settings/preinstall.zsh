@@ -48,11 +48,6 @@ if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-256color ]]; then
   sudo git clone https://github.com/chrissicool/zsh-256color.git ~/.oh-my-zsh/custom/plugins/zsh-256color
 fi
 
-# Install zsh-256color if it’s not present
-if [[ ! -d ~/.oh-my-zsh/custom/plugins/fzf-marks ]]; then
-  sudo git clone https://github.com/urbainvaes/fzf-marks.git ~/.oh-my-zsh/custom/plugins/fzf-marks
-fi
-
 # Install wcwidth-icons if it’s not present
 ## Support fonts with double-width icons
 ## https://github.com/powerman/wcwidth-icons
