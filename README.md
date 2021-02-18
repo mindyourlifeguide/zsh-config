@@ -4,13 +4,6 @@ I am using Arch Kde. Do the adaptation of the solution for yourself according to
 
 This is my personal config, which I am constantly improving. It is based on [OhMyZsh](https://ohmyz.sh/), a [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme.
 
-What problem does he solve?
-One of the main ones is speed.
-
-I am a web developer and in my daily work I use [node](https://nodejs.org/en/). Version control uses [nvm](https://github.com/nvm-sh/nvm).
-But nvm has one problem - slow loading of the terminal.
-I solved this problem with [zsh-async](https://github.com/mafredri/zsh-async). Everything is loaded when needed and now the terminal again immediately after opening is immediately accessible.
-
 Of the interesting things I still use:
 
  - [fzf](https://github.com/junegunn/fzf) - command-line fuzzy finder - for inaccurate quick search;
