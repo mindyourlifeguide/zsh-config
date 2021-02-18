@@ -25,7 +25,8 @@ bindkey '^['      kill-whole-line                          # esc               |
 bindkey '^\t\t'   kill-whole-line                          # tab+tab           | clear line
 bindkey ' '       magic-space                              # space             | also do history expansion on space
 # bindkey '^I'      complete-word                            # tab               | complete on tab, leave expansion to _expand
-bindkey '^I'      autosuggest-accept                       # tab               | autosuggest or comlete on tab 
+bindkey '^I'      autosuggest-accept                       # tab               | autosuggest or complete on tab 
+bindkey '^[[Z' 	  menu-complete                            # shift+tab         | autosuggest menu select
 
 # dircycle hotkey
 bindkey '\E[1;6D' insert-cycledleft                        # ctrl+shiift+left  | previous dir

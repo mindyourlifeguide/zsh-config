@@ -108,6 +108,7 @@ plugins=(
     sudo 
     zsh-256color 
     fast-syntax-highlighting
+    fzf-marks
   )
 #
 source $ZSH/oh-my-zsh.sh
