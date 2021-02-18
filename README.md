@@ -35,31 +35,6 @@ The solution to the problem of slow paste paste-init / paste-finish using [brack
  There is also escaping special characters in url, e.g. `&,?, ~` and so on.
 
 
-
-**USE WITH CAUTION** 
-Also, to use node globally when starting the system of the last selected version, the `nvmpath.sh` file is used, which I put in `/etc/profile.d/`.
-
-*File contents:*
-
-```#! / bin / bash
-####################################################### #############
-# Update system node path to nvm default node path
-####################################################### #############
-update_system_node_path () {
-    SYSTEM_NODE_PATH = "/ usr / local / bin / node"
-    NVM_DEFAULT_NODE_PATH = "$ (nvm which default)"
-    ln -Ffsv "$ NVM_DEFAULT_NODE_PATH" "$ SYSTEM_NODE_PATH"
-}
-export NODE_PATH = `which node`
-export NVM_DIR = ~ / .nvm
- [-s "$ NVM_DIR / nvm.sh"] &&. "$ NVM_DIR / `nvm.sh"`
-```
-**WARNING**
-Also in the config there is a command for managing the GLOBAL state of the node WITHOUT RESTARTING the PC, which gives rights to overwrite in the system partition. In normal mode, a global change of node is possible only after a reboot.
-**USE WITH CAUTION** - a complete system crash is possible - make backups.
-
-To work with nvm, local switching in projects is enough.
-
 ### **Feature Overview**
 ##### Tab | autocomplete + select with arrows
 

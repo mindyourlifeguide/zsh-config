@@ -19,7 +19,7 @@ alias home="cd ~/"
 alias ip='ip -color=auto'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
-alias ipscan='sudo arp-scan --interface=wlan0 --localnet'
+alias ipscan="nmap -sn -oG - 192.168.0.0/24 | grep Up | cut -d ' ' -f 2"
 alias nano="nano -m"
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh &!"
 alias ping='ping -c 1'
@@ -34,7 +34,7 @@ alias -g H='|head'
 alias -g L='|less'
 alias -g N='2>/dev/null'
 alias -g T='|tail'
-alias -g W='|wc'
+alias -g W='|wc'1
 
 # Aliases for ls command options
 alias ls='lsd'
