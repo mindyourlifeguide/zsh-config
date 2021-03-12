@@ -90,8 +90,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
     archlinux 
     git
-    npm 
-    npx 
+    npm  
     yarn 
     docker 
     firewalld 
