@@ -88,10 +88,11 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #
 # defaults
 plugins=(
-    archlinux 
+    archlinux
     git
     npm  
-    yarn 
+    yarn
+    nmap 
     docker 
     firewalld 
     nmap 
@@ -109,6 +110,7 @@ plugins=(
     fast-syntax-highlighting
   )
 #
+
 source $ZSH/oh-my-zsh.sh
 #
 # User configuration
@@ -144,10 +146,6 @@ export LC_NUMERIC="POSIX"
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-
-### system programs
-source ~/.config/broot/launcher/bash/br
-
 ### settings
 source ~/.zsh/settings/preinstall.zsh
 source ~/.zsh/settings/paste.zsh
@@ -171,7 +169,7 @@ source ~/.zsh/function/download_site.zsh
 source ~/.zsh/function/work.zsh
 source ~/.zsh/function/virustotal.zsh
 source ~/.zsh/function/dot.zsh
-
+source ~/.zsh/function/hblock.zsh
 
 # zoxide
 eval "$(zoxide init zsh)"

@@ -21,7 +21,7 @@ bindkey '^H'      backward-kill-word                       # ctrl+backspace    |
 bindkey "\E[3;6~" backward-kill-line                       # ctrl+shift+delete | clear line
 bindkey "\E[3@"   backward-kill-line                       # ctrl+shift+delete | clear line
 bindkey '^z'      push-input                               # ctrl+z            | defer current command
-bindkey '^['      kill-whole-line                          # esc               | clear line
+#bindkey '^['      kill-whole-line                          # esc               | clear line
 bindkey '^\t\t'   kill-whole-line                          # tab+tab           | clear line
 bindkey ' '       magic-space                              # space             | also do history expansion on space
 # bindkey '^I'      complete-word                            # tab               | complete on tab, leave expansion to _expand

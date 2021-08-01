@@ -10,16 +10,16 @@ alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
 alias diff='diff --color=auto'
+alias duf='duf'
 alias find="fd"
 alias g='git'
 alias grep='rg -rl --color=auto'
-alias hblock-off="hblock -S none"
 alias history='fc -il 1'
 alias home="cd ~/"
 alias ip='ip -color=auto'
 alias ipglobal='curl -s https://checkip.amazonaws.com'
 alias iplocal='ip addr show |rg "inet " |rg -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1'
-alias ipscan="nmap -sn -oG - 192.168.0.0/24 | grep Up | cut -d ' ' -f 2"
+alias ipscan="nmap -sn -oG - 192.168.0.0/24 | rg Up | cut -d ' ' -f 2"
 alias nano="nano -m"
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh &!"
 alias ping='ping -c 1'
@@ -73,5 +73,3 @@ if [ -f /usr/bin/grc ]; then
  alias proftpd="grc --colour=auto proftpd"
  alias traceroute="grc --colour=auto traceroute"
 fi
-
- 

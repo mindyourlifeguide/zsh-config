@@ -17,8 +17,8 @@ on() {
 
 
 off() {
-  killall xfreerdp
   sudo wg-quick down client
+  killall xfreerdp
 } 
 
 

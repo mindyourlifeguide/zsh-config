@@ -48,6 +48,7 @@ if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-256color ]]; then
   sudo git clone https://github.com/chrissicool/zsh-256color.git ~/.oh-my-zsh/custom/plugins/zsh-256color
 fi
 
+
 # Install wcwidth-icons if it’s not present
 ## Support fonts with double-width icons
 ## https://github.com/powerman/wcwidth-icons
@@ -61,13 +62,13 @@ fi
 # export LD_PRELOAD="/usr/lib/libwcwidth-icons.so"
 
 # Install cani if it’s not present
-if [[ ! -d ~/.config/cani ]]; then
-   sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
-    cd /tmp/cani
-    gem install cani
-    cd ..
-    sudo rm -rf cani
-fi
+# if [[ ! -d ~/.config/cani ]]; then
+#    sudo git clone https://github.com/SidOfc/cani.git  /tmp/cani
+#     cd /tmp/cani
+#     gem install cani
+#     cd ..
+#     sudo rm -rf cani
+# fi
 
 # Install command-not-found if it’s not present
 source /usr/share/doc/pkgfile/command-not-found.zsh
