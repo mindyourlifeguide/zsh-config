@@ -11,6 +11,7 @@
 
 on() {
   sudo wg-quick up client
+  # sudo systemctl restart stubby.service dnsmasq.service 
   ~/.zsh/work.sh
 }
 
@@ -18,6 +19,7 @@ on() {
 
 off() {
   sudo wg-quick down client
+  # sudo systemctl restart stubby.service dnsmasq.service 
   killall xfreerdp
 } 
 

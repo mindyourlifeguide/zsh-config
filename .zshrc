@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+if [ "$(whoami)" = "root" ]; then
+  ZSH_DISABLE_COMPFIX="true"
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -23,6 +27,8 @@ export ZSH="$HOME/.oh-my-zsh"
 ZLE_RPROMPT_INDENT=0
 POWERLEVEL9K_LEGACY_ICON_SPACING=true
 
+export LIBVA_DRIVER_NAME=i965
+export VDPAU_DRIVER=va_gl
 
 # Hide user@hostname
 # prompt_context () { }
@@ -88,25 +94,16 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #
 # defaults
 plugins=(
-    archlinux
     git
-    npm  
-    yarn
-    nmap 
-    docker 
-    firewalld 
-    nmap 
-    zsh-autosuggestions 
-    zsh-completions 
-    history-substring-search 
-    fzf 
-    dircycle 
-    command-not-found 
-    common-aliases 
-    you-should-use 
-    colored-man-pages 
-    sudo 
-    zsh-256color 
+    zsh-autosuggestions
+    zsh-completions
+    fzf
+    dircycle
+    command-not-found
+    common-aliases
+    colored-man-pages
+    sudo
+    zsh-256color
     fast-syntax-highlighting
   )
 #
@@ -146,8 +143,12 @@ export LC_NUMERIC="POSIX"
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
 ### settings
-source ~/.zsh/settings/preinstall.zsh
+# source ~/.zsh/settings/preinstall.zsh
+source ~/.zsh/settings/init_plugins.zsh
 source ~/.zsh/settings/paste.zsh
 source ~/.zsh/settings/node.zsh
 source ~/.zsh/settings/fzf.zsh
@@ -160,19 +161,13 @@ source ~/.zsh/settings/zcompdump.zsh
 source ~/.zsh/function/system.zsh
 source ~/.zsh/function/pacman.zsh
 source ~/.zsh/function/search.zsh
-source ~/.zsh/function/archive.zsh
+#source ~/.zsh/function/archive.zsh
 
 source ~/.zsh/function/git.zsh
 source ~/.zsh/function/npm.zsh
 source ~/.zsh/function/yarn.zsh
-source ~/.zsh/function/download_site.zsh
+#source ~/.zsh/function/download_site.zsh
 source ~/.zsh/function/work.zsh
-source ~/.zsh/function/virustotal.zsh
-source ~/.zsh/function/dot.zsh
+#source ~/.zsh/function/virustotal.zsh
+#source ~/.zsh/function/dot.zsh
 source ~/.zsh/function/hblock.zsh
-
-# zoxide
-eval "$(zoxide init zsh)"
-
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"

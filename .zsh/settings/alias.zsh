@@ -9,11 +9,12 @@ alias color='rg --color'
 alias cra="create-react-app"
 alias cs="cani show"
 alias cu="cani use"
-alias diff='diff --color=auto'
+alias dmesg="sudo dmesg --human --color=always"
 alias duf='duf'
 alias find="fd"
 alias g='git'
-alias grep='rg -rl --color=auto'
+alias grep='rg --color=auto'
+alias find='fd --color=auto'
 alias history='fc -il 1'
 alias home="cd ~/"
 alias ip='ip -color=auto'
@@ -23,6 +24,7 @@ alias ipscan="nmap -sn -oG - 192.168.0.0/24 | rg Up | cut -d ' ' -f 2"
 alias nano="nano -m"
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh &!"
 alias ping='ping -c 1'
+alias prime="prime-run"
 alias s="yst"
 alias wget='wget -c' # Download ftp file with continuation
 alias zshconfig="$EDITOR ~/.zshrc &!"
@@ -65,11 +67,30 @@ alias restore='sudo timeshift --restore'
 
 # Note: if you do not define nocorrect here,zsh will aggressively suggest substituting existing names when creating a catalog, copying, etc.
 if [ -f /usr/bin/grc ]; then
- alias gcc="grc --colour=auto gcc"
- alias irclog="grc --colour=auto irclog"
- alias log="grc --colour=auto log"
- alias netstat="grc --colour=auto netstat"
- alias ping="grc --colour=auto ping"
- alias proftpd="grc --colour=auto proftpd"
- alias traceroute="grc --colour=auto traceroute"
+   alias gcc="grc --colour=auto gcc"
+   alias irclog="grc --colour=auto irclog"
+   alias log="grc --colour=auto log"
+   alias netstat="grc --colour=auto netstat"
+   alias ping="grc --colour=auto ping"
+   alias proftpd="grc --colour=auto proftpd"
+   alias traceroute="grc --colour=auto traceroute"
+   alias cvs="grc --colour=auto cvs"
+   alias diff="grc --colour=auto diff"
+   alias esperanto="grc --colour=auto esperanto"
+   alias ldap="grc --colour=auto ldap"
+   alias proftpd="grc --colour=auto proftpd"
+   alias traceroute="grc --colour=auto traceroute"
+   alias wdiff="grc --colour=auto wdiff"
+   alias dig="grc --colour=auto dig"
+   alias ll="grc --colour=auto ls -l"
+   alias cat="grc --colour=auto cat"
+   alias zcat="grc --colour=auto zcat"
+   alias make="grc --colour=auto make"
+   alias gcc="grc --colour=auto gcc"
+   alias g++="grc --colour=auto g++"
+   alias head="grc --colour=auto head"
+   alias mount="grc --colour=auto mount"
+   alias ps="grc --colour=auto ps"
+   alias mtr="grc --colour=auto mtr"
+   alias zgrep="grc --colour=auto zgrep"
 fi

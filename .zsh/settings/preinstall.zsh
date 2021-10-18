@@ -7,8 +7,6 @@ fi
 if [[ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
   sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
 fi
-## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Install fast-syntax-highlighting if it’s not present
 if [[ ! -d ~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting ]]; then
@@ -35,8 +33,7 @@ fi
 if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autopair ]]; then
   sudo git clone https://github.com/hlissner/zsh-autopair ~/.oh-my-zsh/custom/plugins/zsh-autopair
 fi
-source ~/.oh-my-zsh/custom/plugins/zsh-autopair/autopair.zsh
-autopair-init
+
 
 # Install you-should-use if it’s not present
 if [[ ! -d ~/.oh-my-zsh/custom/plugins/you-should-use ]]; then
@@ -70,5 +67,4 @@ fi
 #     sudo rm -rf cani
 # fi
 
-# Install command-not-found if it’s not present
-source /usr/share/doc/pkgfile/command-not-found.zsh
+

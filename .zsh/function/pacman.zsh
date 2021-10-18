@@ -35,11 +35,11 @@ update() {
 
 
 # add() {
-#   paru -Slq | fzf -m  --preview 'paru -Si {1}' | xargs -ro paru -S
+#   paru -Slq | fzf -m  --preview 'paru -Si {1}' | xargs -tro paru -S
 # }
 
 # remove() {
-#   paru -Qq | fzf -m --preview 'paru -Si {1}' | xargs -ro paru -Rsn
+#   paru -Qq | fzf -m --preview 'paru -Si {1}' | xargs -tro paru -Rsn
 # }
 
 # pkg() {

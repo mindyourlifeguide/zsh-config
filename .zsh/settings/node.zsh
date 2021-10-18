@@ -13,7 +13,7 @@ if [[ `whoami` != 'root' ]]; then (
 
     ## Install all-the-package-names for fzf
     if [[ ! -d ~/.volta/tools/image/packages/all-the-package-names ]]; then
-       sudo volta install all-the-package-names
+       volta install all-the-package-names
     fi
   )
 fi
